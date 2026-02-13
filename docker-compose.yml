@@ -1,0 +1,13 @@
+services:
+  db:
+    image: mysql
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: spring_db  # ← ADD THIS LINE
+    ports:
+      - "3307:3306"
+    volumes:
+      - spring_academy_data:/var/lib/mysql
+volumes:
+  spring_academy_data:
