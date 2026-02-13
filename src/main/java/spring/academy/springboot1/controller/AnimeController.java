@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.academy.springboot1.domain.Anime;
+import spring.academy.springboot1.requestDTO.AnimePostRequestBody;
+import spring.academy.springboot1.requestDTO.AnimePutRequestBody;
 import spring.academy.springboot1.services.AnimeService;
 import spring.academy.springboot1.util.DateUtil;
 
@@ -31,17 +33,23 @@ public class AnimeController {
     @GetMapping("/{id}")
     public ResponseEntity<Anime> findByID(@PathVariable long id){
         log.info(dateUtil.formatLocalDateTimeToLocalDatabeseStyle(LocalDateTime.now()));
-        return new ResponseEntity<>(animeService.findById(id), HttpStatus.OK);
+        return new ResponseEntity<>(animeService.findByIdOrThrowBadRequestionException(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody Anime anime){
-        return new ResponseEntity<>(animeService.Save(anime), HttpStatus.CREATED);
+    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody animePostRequestBody){
+        return new ResponseEntity<>(animeService.Save(animePostRequestBody), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id){
         animeService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping
+    public ResponseEntity<Anime> repace(@RequestBody AnimePutRequestBody animePutRequestBody){
+        animeService.repace(animePutRequestBody);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
