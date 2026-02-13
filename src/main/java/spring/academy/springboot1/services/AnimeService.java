@@ -6,13 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import spring.academy.springboot1.domain.Anime;
+import spring.academy.springboot1.mapper.AnimeMapper;
 import spring.academy.springboot1.repository.AnimeRepository;
 import spring.academy.springboot1.requestDTO.AnimePostRequestBody;
 import spring.academy.springboot1.requestDTO.AnimePutRequestBody;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +29,7 @@ public class AnimeService {
     }
 
     public Anime Save(AnimePostRequestBody animePostRequestBody){
-        return animeRepository.save(Anime.builder().name(animePostRequestBody.getName()).build());
+        return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
     }
 
     public void delete(Long id){
@@ -38,10 +38,8 @@ public class AnimeService {
 
     public void repace(AnimePutRequestBody animePutRequestBody){
         Anime savedAnime = findByIdOrThrowBadRequestionException(animePutRequestBody.getId());
-        Anime anime = Anime.builder()
-                .id(savedAnime.getId())
-                .name(animePutRequestBody.getName())
-                .build();
+        Anime anime = AnimeMapper.INSTANCE.toAnime(animePutRequestBody);
+        anime.setId(savedAnime.getId());
         animeRepository.save(anime);
     }
 
