@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import spring.academy.springboot1.domain.Anime;
 import spring.academy.springboot1.requestDTO.AnimePostRequestBody;
@@ -40,7 +41,7 @@ public class AnimeController {
     }
 
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody animePostRequestBody){
+    public ResponseEntity<Anime> save(@RequestBody @Validated AnimePostRequestBody animePostRequestBody){
         return new ResponseEntity<>(animeService.Save(animePostRequestBody), HttpStatus.CREATED);
     }
 

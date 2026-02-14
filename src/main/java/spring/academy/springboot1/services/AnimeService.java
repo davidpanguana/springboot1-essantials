@@ -1,6 +1,7 @@
 package spring.academy.springboot1.services;
 
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import spring.academy.springboot1.domain.Anime;
@@ -31,6 +32,7 @@ public class AnimeService {
                 .orElseThrow(() -> new BadRequestException("Anime not faond"));
     }
 
+    @Transactional
     public Anime Save(AnimePostRequestBody animePostRequestBody){
         return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
     }
