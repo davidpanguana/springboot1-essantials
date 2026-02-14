@@ -2,11 +2,9 @@ package spring.academy.springboot1.services;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import spring.academy.springboot1.domain.Anime;
-import spring.academy.springboot1.exception.BedRequestException;
+import spring.academy.springboot1.exception.BadRequestException;
 import spring.academy.springboot1.mapper.AnimeMapper;
 import spring.academy.springboot1.repository.AnimeRepository;
 import spring.academy.springboot1.requestDTO.AnimePostRequestBody;
@@ -30,7 +28,7 @@ public class AnimeService {
 
     public Anime findByIdOrThrowBadRequestionException(long id){
         return animeRepository.findById(id)
-                .orElseThrow(() -> new BedRequestException("Anime not faond"));
+                .orElseThrow(() -> new BadRequestException("Anime not faond"));
     }
 
     public Anime Save(AnimePostRequestBody animePostRequestBody){
