@@ -20,6 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AnimeService {
    public final AnimeRepository animeRepository;
+    private final AnimeMapper animeMapper;
+
 
     public Page<Anime> listAll(Pageable pageable){
         return animeRepository.findAll(pageable);
@@ -34,20 +36,24 @@ public class AnimeService {
                 .orElseThrow(() -> new BadRequestException("Anime not faond"));
     }
 
+
     @Transactional
-    public Anime Save(AnimePostRequestBody animePostRequestBody){
-        return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
+    public Anime save(AnimePostRequestBody animePostRequestBody){
+        return animeRepository.save(animeMapper.toAnime(animePostRequestBody));
     }
 
     public void delete(Long id){
         animeRepository.delete(findByIdOrThrowBadRequestionException(id));
     }
 
-    public void repace(AnimePutRequestBody animePutRequestBody){
+    @Transactional
+    public void replace(AnimePutRequestBody animePutRequestBody){
         Anime savedAnime = findByIdOrThrowBadRequestionException(animePutRequestBody.getId());
-        Anime anime = AnimeMapper.INSTANCE.toAnime(animePutRequestBody);
-        anime.setId(savedAnime.getId());
-        animeRepository.save(anime);
+
+        savedAnime.setName(animePutRequestBody.getName());
+
+        animeRepository.save(savedAnime);
     }
+
 
 }

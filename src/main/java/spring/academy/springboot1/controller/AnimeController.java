@@ -1,6 +1,7 @@
 package spring.academy.springboot1.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -43,9 +44,11 @@ public class AnimeController {
     }
 
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody @Validated AnimePostRequestBody animePostRequestBody){
-        return new ResponseEntity<>(animeService.Save(animePostRequestBody), HttpStatus.CREATED);
+    public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody animePostRequestBody){
+        Anime savedAnime = animeService.save(animePostRequestBody);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedAnime);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id){
@@ -54,8 +57,9 @@ public class AnimeController {
     }
 
     @PutMapping
-    public ResponseEntity<Anime> repace(@RequestBody AnimePutRequestBody animePutRequestBody){
-        animeService.repace(animePutRequestBody);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Void> replace(@RequestBody AnimePutRequestBody animePutRequestBody){
+        animeService.replace(animePutRequestBody);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }
