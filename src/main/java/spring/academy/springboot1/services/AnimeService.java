@@ -3,6 +3,8 @@ package spring.academy.springboot1.services;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import spring.academy.springboot1.domain.Anime;
 import spring.academy.springboot1.exception.BadRequestException;
@@ -19,8 +21,8 @@ import java.util.List;
 public class AnimeService {
    public final AnimeRepository animeRepository;
 
-    public List<Anime> listAll(){
-        return animeRepository.findAll();
+    public Page<Anime> listAll(Pageable pageable){
+        return animeRepository.findAll(pageable);
     }
 
     public List<Anime> findByName(String name){
